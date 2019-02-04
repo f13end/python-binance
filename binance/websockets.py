@@ -16,7 +16,7 @@ from binance.client import Client
 class BinanceClientProtocol(WebSocketClientProtocol):
 
     def __init__(self):
-        super().__init__()
+        super(WebSocketClientProtocol, self).__init__()
 
     def onConnect(self, response):
         # reset the delay after reconnecting
@@ -432,7 +432,7 @@ class BinanceSocketManager(threading.Thread):
     def start_user_socket(self, callback):
         """Start a websocket for user data
 
-        https://www.binance.com/restapipub.html#user-wss-endpoint
+        https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
 
         :param callback: callback function to handle messages
         :type callback: function
