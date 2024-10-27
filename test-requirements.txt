@@ -1,9 +1,10 @@
 coverage
 flake8
 pytest
+pytest-asyncio
 pytest-cov
-pytest-pep8
-python-coveralls
+pytest-flake8
 requests-mock
 tox
 setuptools
+aioresponses

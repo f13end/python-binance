@@ -4,18 +4,46 @@
 from binance.client import Client
 import pytest
 import requests_mock
+import os
 
-
-client = Client('api_key', 'api_secret')
+client = Client("api_key", "api_secret", ping=False)
 
 
 def test_exact_amount():
     """Test Exact amount returned"""
 
-    first_available_res = [[1500004800000, "0.00005000", "0.00005300", "0.00001000", "0.00004790", "663152.00000000", 1500004859999, "30.55108144", 43, "559224.00000000", "25.65468144", "83431971.04346950"]]
+    first_available_res = [
+        [
+            1500004800000,
+            "0.00005000",
+            "0.00005300",
+            "0.00001000",
+            "0.00004790",
+            "663152.00000000",
+            1500004859999,
+            "30.55108144",
+            43,
+            "559224.00000000",
+            "25.65468144",
+            "83431971.04346950",
+        ]
+    ]
 
     first_res = []
-    row = [1519892340000, "0.00099400", "0.00099810", "0.00099400", "0.00099810", "4806.04000000", 1519892399999, "4.78553253", 154, "1785.14000000", "1.77837524", "0"]
+    row = [
+        1519892340000,
+        "0.00099400",
+        "0.00099810",
+        "0.00099400",
+        "0.00099810",
+        "4806.04000000",
+        1519892399999,
+        "4.78553253",
+        154,
+        "1785.14000000",
+        "1.77837524",
+        "0",
+    ]
 
     for i in range(0, 500):
         first_res.append(row)
@@ -23,13 +51,20 @@ def test_exact_amount():
     second_res = []
 
     with requests_mock.mock() as m:
-        m.get('https://api.binance.com/api/v1/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC', json=first_available_res)
-        m.get('https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519862400000&symbol=BNBBTC', json=first_res)
-        m.get('https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519892400000&symbol=BNBBTC', json=second_res)
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            json=first_available_res,
+        )
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519862400000&symbol=BNBBTC",
+            json=first_res,
+        )
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519892400000&symbol=BNBBTC",
+            json=second_res,
+        )
         klines = client.get_historical_klines(
-            symbol="BNBBTC",
-            interval=Client.KLINE_INTERVAL_1MINUTE,
-            start_str="1st March 2018"
+            symbol="BNBBTC", interval=Client.KLINE_INTERVAL_1MINUTE, start_str="1st March 2018"
         )
         assert len(klines) == 500
 
@@ -74,11 +109,11 @@ def test_start_and_end_str():
 
     with requests_mock.mock() as m:
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
             json=first_available_res,
         )
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
             json=first_res,
         )
         klines = client.get_historical_klines(
@@ -130,11 +165,11 @@ def test_start_and_end_timestamp():
 
     with requests_mock.mock() as m:
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
             json=first_available_res,
         )
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
             json=first_res,
         )
         klines = client.get_historical_klines(
@@ -186,11 +221,11 @@ def test_historical_kline_generator():
 
     with requests_mock.mock() as m:
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
             json=first_available_res,
         )
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
             json=first_res,
         )
         klines = client.get_historical_klines_generator(
@@ -229,11 +264,11 @@ def test_historical_kline_generator_empty_response():
 
     with requests_mock.mock() as m:
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
             json=first_available_res,
         )
         m.get(
-            "https://api.binance.com/api/v1/klines?interval=1m&limit=500&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1000&startTime=1519862400000&endTime=1519880400000&symbol=BNBBTC",
             json=first_res,
         )
         klines = client.get_historical_klines_generator(
@@ -245,3 +280,62 @@ def test_historical_kline_generator_empty_response():
 
         with pytest.raises(StopIteration):
             next(klines)
+
+def test_start_and_limit():
+    """Test start_str and limit work correctly with integer timestamp"""
+
+    first_available_res = [
+        [
+            1500004800000,
+            "0.00005000",
+            "0.00005300",
+            "0.00001000",
+            "0.00004790",
+            "663152.00000000",
+            1500004859999,
+            "30.55108144",
+            43,
+            "559224.00000000",
+            "25.65468144",
+            "83431971.04346950",
+        ]
+    ]
+    first_res = []
+    row = [
+        1519892340000,
+        "0.00099400",
+        "0.00099810",
+        "0.00099400",
+        "0.00099810",
+        "4806.04000000",
+        1519892399999,
+        "4.78553253",
+        154,
+        "1785.14000000",
+        "1.77837524",
+        "0",
+    ]
+
+    for i in range(0, 5):
+        first_res.append(row)
+
+    with requests_mock.mock() as m:
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=1&startTime=0&symbol=BNBBTC",
+            json=first_available_res,
+        )
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=5&startTime=1519892400000&symbol=BNBBTC",
+            json=first_res,
+        )
+        m.get(
+            "https://api.binance.com/api/v3/klines?interval=1m&limit=5&startTime=1519862400000&symbol=BNBBTC",
+            json=first_res,
+        )
+        klines = client.get_historical_klines(
+            symbol="BNBBTC",
+            interval=Client.KLINE_INTERVAL_1MINUTE,
+            start_str=1519862400000,
+            limit=5,
+        )
+        assert len(klines) == 5

@@ -1,6 +1,360 @@
 Changelog
 =========
 
+v1.0.21 - 2024-10-23
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+- Some new endpoints
+
+**Fixed**
+- url encoding for coin-m post endpoints
+- batch order endpoint
+- Some minor bug fixes
+
+v1.0.20 - 2024-10-22
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+- EDDSA authentication
+- Portfolio Margin endpoints
+- Some new futures endpoints
+- Proxy support for the AsyncClient
+- Version override is possible now through `params`
+
+**Fixed**
+- Migrated `positionRisk` to v3
+- Fixed the error `AttributeError("'Connect' object has no attribute 'protocol'")`
+- Some minor bug fixes
+
+v1.0.19 - 2023-08-11
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- some new futures and margin endpoints
+- pass session_params to streams for AsyncClient
+
+**Fixed**
+
+- removed debug statements
+- options testnet URL
+- accessing msg variable before assignment
+
+v1.0.18 - 2023-08-09
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- TRAILING_STOP_MARKET option for orders
+
+**Fixed**
+
+- futures api endpoint versions
+- margin endpoint request methods
+
+
+v1.0.17 - 2023-02-21
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- RSA key authentication
+- Support for api1, api2, api3, api4 base endpoints
+- binance.us staking endpoints
+- Options ticker by expiration socket
+- Staking endpoints
+- Pay and Convert endpoints
+- Futures index info endpoint
+- Open OCO Orders endpoint
+- Param to pass session params to aiohttp.ClientSession
+
+**Updated**
+
+- Some margin endpoint versions
+- Support testnet for more streams
+
+**Fixed**
+
+- Indefinite websocket reconnect loop
+- Crash on parsing code from some errors
+
+v1.0.16 - 2022-04-09
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- pass limit param to all kline functions
+- increase default for kline functions from 500 to 1000
+- add HistoricalKlinesType.FUTURES_COIN as option for kline functions
+- testnet URL for coin_futures_socket
+
+**Updated**
+
+- round_step_size more accurate
+
+**Fixed**
+
+- remove deprecated loop param
+- websockets unpinned
+- hanging websockets in exiting state
+- check start_ts after end_ts for klines
+- multi assets margin params
+
+
+v1.0.15 - 2021-09-27
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- Enable/disable margin account for symbol endpoints
+- Top trader long/short positions endpoint
+- Global long/short ratio endpoint
+
+**Fixed**
+
+- fix websockets to 9.1
+- websocket reconnect updates
+- fix futures kline sockets
+
+
+v1.0.14 - 2021-09-08
+^^^^^^^^^^^^^^^^^^^^
+
+**Fixed**
+
+- websocket reconnecting
+
+v1.0.13 - 2021-09-08
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- Futures Depth Cache Manager
+- Futures kline websocket stream
+- Coin Futures User websocket stream
+- New Margin endpoints
+- Margin OCO order endpoints
+- Fiat endpoints
+- C2C endpoints
+- Account API permissions endpoint
+
+**Fixed**
+
+- changed `asset` to `coin` in withdraw endpoint
+
+
+v1.0.12 - 2021-06-03
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- coin futures batch order function
+
+**Fixed**
+
+- threaded websockets on python3.9
+- filter out None params in request kwargs
+- deconflict streams with same name on different websocket urls
+- reduce close timeout on websocket close to short time to reduce waiting
+
+
+v1.0.10 - 2021-05-13
+^^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- futures multi-asset margin mode endpoints
+- optional symbol param to get_all_tickers
+
+**Fixed**
+
+- start_multiplex_socket remove lower case filter on stream names
+
+v1.0.9 - 2021-05-12
+^^^^^^^^^^^^^^^^^^^
+
+**Fixed**
+
+- start_book_ticker_socket and start_multiplex_socket to call correct async function
+
+v1.0.8 - 2021-05-11
+^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- old style websocket and depth cache managers as option without interacting with asyncio
+
+**Fixed**
+
+- fixed issue with get_historical_klines in Client
+- remove print debug line
+
+v1.0.7
+^^^^^^
+
+**Fixed**
+
+- remove version param from get_sub_account_assets
+
+v1.0.6
+^^^^^^
+
+**Fixed**
+
+- fix time for authenticated stream keepalive
+
+v1.0.5
+^^^^^^
+
+**Fixed**
+
+- Restored access to last response on client
+
+v1.0.4
+^^^^^^
+
+**Added**
+
+- Futures Testnet support
+- Kline type for fetching historical klines
+
+**Fixed**
+
+- Spot Testnet websocket URL
+
+v1.0.3
+^^^^^^
+
+**Added**
+
+- Spot Testnet support
+
+v1.0.2
+^^^^^^
+
+**Added**
+
+- start of typing to client and websockets
+
+**Fixed**
+
+- end_str, limit, spot params in kline fetching
+- drop None values in params passed
+
+**Updated**
+
+- more examples in docs
+
+v1.0.1
+^^^^^^
+
+**Fixed**
+
+- restored params for Client and AsyncClient classes
+
+v1.0.0
+^^^^^^
+
+**Added**
+
+- Async support for all REST endpoints
+- USDⓈ-M and Coin-M Futures websocket streams
+- Websockets use same tld as Client
+- convert type option for DepthCache
+
+**Breaking Changes**
+
+- Supports only py3.6+
+- All wapi calls changed to sapi
+- Websockets have changed to use Asynchronous context managers
+
+**Fixed**
+
+- get_historical_klines params
+
+v0.7.11
+^^^^^^^
+
+**Added**
+- Vanilla Options REST endpoints
+- Vanilla Options websockets
+- Futures order type enums
+
+**Updated**
+
+- websocket keep-alive functions for different socket types
+- dependencies
+
+**Fixed**
+
+- change to User-Agent to avoid connection issues
+
+v0.7.5.dev
+^^^^^^^^^^
+**Changed**
+- Stock json lib to ujson (https://github.com/sammchardy/python-binance/pull/383)
+
+v0.7.5 - 2020-02-06
+^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- Futures REST endpoints
+- Lending REST endpoints
+- OCO Orders function `create_oco_order`, `order_oco_buy`, `order_oco_sell`
+- Average Price function `get_avg_price`
+- Support for other domains (.us, .jp, etc)
+
+**Updated**
+
+- dependencies
+
+**Fixed**
+
+- websocket keepalive callback not found
+
+v0.7.4 - 2019-09-22
+^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- symbol book ticker websocket streams
+- margin websocket stream
+
+**Updated**
+
+- can call Client without any params
+- make response a property of the Client class so you can access response properties after a request
+
+**Fixed**
+
+- issue with None value params causing errors
+
+v0.7.3 - 2019-08-12
+^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- sub account endpoints
+- dust transfer endpoint
+- asset divident history endpoint
+
+**Removed**
+
+- deprecated withdraw fee endpoint
+
+v0.7.2 - 2019-08-01
+^^^^^^^^^^^^^^^^^^^
+
+**Added**
+
+- margin trading endpoints
+
+**Fixed**
+
+- depth cache clearing bug
+
 v0.7.1 - 2019-01-23
 ^^^^^^^^^^^^^^^^^^^
 
